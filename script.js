@@ -8,7 +8,20 @@ class SignLanguageApp {
         this.celebrationItems = [];
         this.stickers = parseInt(localStorage.getItem('signStars') || '0', 10);
         this.sentenceLevel = 0; // 쉬운 문장부터 순차 진행
+        this.totalGamesPlayed = 0;
+        this.soundEnabled = true;
+        this.currentDifficulty = 'easy';
         this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        // 마스코트 메시지
+        this.mascotMessages = [
+            '잘했어요!',
+            '화이팅!',
+            '너무 귀여워요!',
+            '한 번 더 해봐요!',
+            '즐거워요!',
+            '최고예요!'
+        ];
 
         // 수화 단어 데이터: 단계별 동작 카드 + 손모양(hand) + 움직임(motion)
         this.signPhrases = [
@@ -92,6 +105,7 @@ class SignLanguageApp {
     }
 
     setupEventListeners() {
+        // 게임 네비게이션 버튼
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const game = e.currentTarget.dataset.game;
@@ -99,6 +113,15 @@ class SignLanguageApp {
             });
         });
 
+        // 난이도 선택 버튼
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const difficulty = e.currentTarget.dataset.diff;
+                this.setDifficulty(difficulty);
+            });
+        });
+
+        // 게임별 액션 버튼
         document.getElementById('follow-gesture')?.addEventListener('click', () => {
             this.startGestureFollow();
         });
@@ -113,6 +136,35 @@ class SignLanguageApp {
 
         document.getElementById('follow-voice-impl')?.addEventListener('click', () => {
             this.startVoiceImplFollow();
+        });
+
+        // 마스코트 클릭
+        const mascot = document.getElementById('mascot');
+        if (mascot) {
+            mascot.addEventListener('click', () => {
+                const randomMsg = this.mascotMessages[Math.floor(Math.random() * this.mascotMessages.length)];
+                this.showMascotBubble(randomMsg);
+                if (this.soundEnabled) {
+                    this.speak(randomMsg);
+                }
+            });
+            
+            mascot.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    mascot.click();
+                }
+            });
+        }
+
+        // 음성 토글 버튼
+        document.getElementById('sound-toggle')?.addEventListener('click', () => {
+            this.toggleSound();
+        });
+
+        // 진행 상황 초기화 버튼
+        document.getElementById('reset-progress')?.addEventListener('click', () => {
+            this.resetProgress();
         });
     }
 
@@ -684,13 +736,7 @@ class SignLanguageApp {
             starsContainer.parentNode?.removeChild(starsContainer);
         }, 3000);
     }
-}
-
-// 앱 초기화
-document.addEventListener('DOMContentLoaded', () => {
-    new SignLanguageApp();
-});
-
+    
     /* ---------- 추가 기능들 ---------- */
     
     // 난이도 설정
@@ -737,27 +783,6 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.classList.toggle('show', show);
             overlay.setAttribute('aria-hidden', !show);
         }
-    }
-    
-    // 마스코트 상호작용
-    setupMascotInteraction() {
-        const mascot = document.getElementById('mascot');
-        if (!mascot) return;
-        
-        mascot.addEventListener('click', () => {
-            const randomMsg = this.mascotMessages[Math.floor(Math.random() * this.mascotMessages.length)];
-            this.showMascotBubble(randomMsg);
-            if (this.soundEnabled) {
-                this.speak(randomMsg);
-            }
-        });
-        
-        mascot.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                mascot.click();
-            }
-        });
     }
     
     // 마스코트 말풍선 표시
