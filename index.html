@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>손으로 말해요 - 유아 수화 놀이</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌟 손으로 말해요 🌟</h1>
+            <p>손짓으로 이야기하는 재미있는 수화 놀이</p>
+            <div class="sticker-bar" aria-label="내가 모은 별">
+                <span class="sticker-label">내 별</span>
+                <span class="sticker-count" id="sticker-count">⭐ 0</span>
+            </div>
+        </header>
+
+        <nav class="game-nav">
+            <button class="nav-btn active" data-game="gesture">
+                <span class="nav-icon">✋</span>
+                <span class="nav-label">따라해요</span>
+            </button>
+            <button class="nav-btn" data-game="voice-follow">
+                <span class="nav-icon">🗣️</span>
+                <span class="nav-label">말해요</span>
+            </button>
+            <button class="nav-btn" data-game="sentence">
+                <span class="nav-icon">📝</span>
+                <span class="nav-label">문장놀이</span>
+            </button>
+            <button class="nav-btn" data-game="voice-impl">
+                <span class="nav-icon">🎵</span>
+                <span class="nav-label">함께해요</span>
+            </button>
+        </nav>
+
+        <main class="game-container">
+            <!-- 수화 몸짓 따라하기 -->
+            <section id="gesture-game" class="game-section active">
+                <h2>✋ 손으로 따라해요</h2>
+                <div class="phrase-display" id="gesture-phrase">
+                    <!-- 수화 문구가 여기에 표시됩니다 -->
+                </div>
+                <div class="step-cards" id="gesture-steps">
+                    <!-- 단계별 동작 카드가 여기에 표시됩니다 -->
+                </div>
+                <div class="gesture-animation" id="gesture-animation">
+                    <!-- 손 동작 그림이 여기에 표시됩니다 -->
+                </div>
+                <button class="big-btn primary" id="follow-gesture">✋ 나도 해볼래요!</button>
+            </section>
+
+            <!-- 수화 음성 따라하기 -->
+            <section id="voice-follow-game" class="game-section">
+                <h2>🗣️ 소리 내어 말해요</h2>
+                <div class="phrase-display" id="voice-follow-phrase">
+                    <!-- 문제가 여기에 표시됩니다 -->
+                </div>
+                <div class="voice-options" id="voice-follow-options">
+                    <!-- 선택 카드들이 생성됩니다 -->
+                </div>
+                <button class="big-btn record" id="voice-follow-record">🎤 말하기</button>
+                <div class="feedback" id="voice-follow-feedback"></div>
+            </section>
+
+            <!-- 문장놀이 -->
+            <section id="sentence-game" class="game-section">
+                <h2>📝 문장 만들기</h2>
+                <div class="sentence-display" id="sentence-display">
+                    <!-- 빈칸이 여기에 표시됩니다 -->
+                </div>
+                <div class="sign-bank" id="sign-bank">
+                    <!-- 수화 카드 선택지가 생성됩니다 -->
+                </div>
+                <button class="big-btn success" id="check-sentence">✔️ 다 됐어요!</button>
+                <div class="feedback" id="sentence-feedback"></div>
+            </section>
+
+            <!-- 음성 구현 따라하기 놀이 -->
+            <section id="voice-impl-game" class="game-section">
+                <h2>🎵 소리와 함께해요</h2>
+                <div class="phrase-display" id="voice-impl-phrase">
+                    <!-- 수화 문구와 음성이 표시됩니다 -->
+                </div>
+                <div class="gesture-animation" id="voice-impl-animation">
+                    <!-- 손 동작과 음성 동기화 애니메이션 -->
+                </div>
+                <button class="big-btn primary" id="follow-voice-impl">🎵 따라하기!</button>
+                <div class="feedback" id="voice-impl-feedback"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>💕 손으로 마음을 전해요 💕</p>
+        </footer>
+    </div>
+
+    <!-- 마스코트 캐릭터 -->
+    <div class="mascot" id="mascot" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+            <circle cx="36" cy="26" r="14" class="m-ear"/>
+            <circle cx="84" cy="26" r="14" class="m-ear"/>
+            <circle cx="60" cy="62" r="42" class="m-face"/>
+            <circle cx="46" cy="56" r="6" class="m-eye"/>
+            <circle cx="74" cy="56" r="6" class="m-eye"/>
+            <circle cx="48" cy="54" r="2" class="m-sparkle"/>
+            <circle cx="76" cy="54" r="2" class="m-sparkle"/>
+            <ellipse cx="60" cy="74" rx="11" ry="9" class="m-snout"/>
+            <path d="M54 78 Q60 84 66 78" class="m-mouth"/>
+            <circle cx="35" cy="70" r="6" class="m-cheek"/>
+            <circle cx="85" cy="70" r="6" class="m-cheek"/>
+        </svg>
+    </div>
+
+    <!-- 그래픽 효과 요소들 -->
+    <div id="particles-container"></div>
+    <div id="celebration-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
