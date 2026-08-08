@@ -4,105 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>손으로 말해요 - 유아 수화 놀이</title>
+    <meta name="description" content="유아를 위한 재미있는 수화 학습 게임입니다.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIu2YjeeahOydhCDsg7Tshqzsh4giLCgKICAic2hvcnRfbmFtZSI6ICLinK3nmoTsrbEiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI0ZGRjZFQyIsCiAgInRoZW1lX2NvbG9yIjogIiNGRjhGQTMiCn0=">
 </head>
 <body>
     <div class="container">
-        <header>
+        <header role="banner">
             <h1>🌟 손으로 말해요 🌟</h1>
             <p>손짓으로 이야기하는 재미있는 수화 놀이</p>
+            <div class="progress-container" aria-label="학습 진행률">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="level-badge" id="level-badge">1단계</span>
+            </div>
             <div class="sticker-bar" aria-label="내가 모은 별">
                 <span class="sticker-label">내 별</span>
-                <span class="sticker-count" id="sticker-count">⭐ 0</span>
+                <span class="sticker-count" id="sticker-count" role="status" aria-live="polite">⭐ 0</span>
             </div>
         </header>
 
-        <nav class="game-nav">
-            <button class="nav-btn active" data-game="gesture">
-                <span class="nav-icon">✋</span>
+        <nav class="game-nav" role="navigation" aria-label="게임 메뉴">
+            <button class="nav-btn active" data-game="gesture" aria-pressed="true" tabindex="0">
+                <span class="nav-icon" aria-hidden="true">✋</span>
                 <span class="nav-label">따라해요</span>
             </button>
-            <button class="nav-btn" data-game="voice-follow">
-                <span class="nav-icon">🗣️</span>
+            <button class="nav-btn" data-game="voice-follow" aria-pressed="false" tabindex="0">
+                <span class="nav-icon" aria-hidden="true">🗣️</span>
                 <span class="nav-label">말해요</span>
             </button>
-            <button class="nav-btn" data-game="sentence">
-                <span class="nav-icon">📝</span>
+            <button class="nav-btn" data-game="sentence" aria-pressed="false" tabindex="0">
+                <span class="nav-icon" aria-hidden="true">📝</span>
                 <span class="nav-label">문장놀이</span>
             </button>
-            <button class="nav-btn" data-game="voice-impl">
-                <span class="nav-icon">🎵</span>
+            <button class="nav-btn" data-game="voice-impl" aria-pressed="false" tabindex="0">
+                <span class="nav-icon" aria-hidden="true">🎵</span>
                 <span class="nav-label">함께해요</span>
             </button>
         </nav>
 
-        <main class="game-container">
+        <main class="game-container" role="main">
             <!-- 수화 몸짓 따라하기 -->
-            <section id="gesture-game" class="game-section active">
-                <h2>✋ 손으로 따라해요</h2>
-                <div class="phrase-display" id="gesture-phrase">
+            <section id="gesture-game" class="game-section active" aria-labelledby="gesture-title" role="region">
+                <h2 id="gesture-title">✋ 손으로 따라해요</h2>
+                <div class="difficulty-selector" role="group" aria-label="난이도 선택">
+                    <button class="diff-btn easy active" data-diff="easy" aria-pressed="true">쉬움</button>
+                    <button class="diff-btn medium" data-diff="medium" aria-pressed="false">보통</button>
+                    <button class="diff-btn hard" data-diff="hard" aria-pressed="false">어려움</button>
+                </div>
+                <div class="phrase-display" id="gesture-phrase" role="img" aria-live="polite">
                     <!-- 수화 문구가 여기에 표시됩니다 -->
                 </div>
-                <div class="step-cards" id="gesture-steps">
+                <div class="step-cards" id="gesture-steps" role="list">
                     <!-- 단계별 동작 카드가 여기에 표시됩니다 -->
                 </div>
-                <div class="gesture-animation" id="gesture-animation">
+                <div class="gesture-animation" id="gesture-animation" aria-label="수화 동작 애니메이션">
                     <!-- 손 동작 그림이 여기에 표시됩니다 -->
                 </div>
-                <button class="big-btn primary" id="follow-gesture">✋ 나도 해볼래요!</button>
+                <button class="big-btn primary" id="follow-gesture" aria-label="나도 해볼래요 버튼">✋ 나도 해볼래요!</button>
             </section>
 
             <!-- 수화 음성 따라하기 -->
-            <section id="voice-follow-game" class="game-section">
-                <h2>🗣️ 소리 내어 말해요</h2>
-                <div class="phrase-display" id="voice-follow-phrase">
+            <section id="voice-follow-game" class="game-section" aria-labelledby="voice-follow-title" role="region">
+                <h2 id="voice-follow-title">🗣️ 소리 내어 말해요</h2>
+                <div class="phrase-display" id="voice-follow-phrase" role="status" aria-live="polite">
                     <!-- 문제가 여기에 표시됩니다 -->
                 </div>
-                <div class="voice-options" id="voice-follow-options">
+                <div class="voice-options" id="voice-follow-options" role="group" aria-label="음성 선택지">
                     <!-- 선택 카드들이 생성됩니다 -->
                 </div>
-                <button class="big-btn record" id="voice-follow-record">🎤 말하기</button>
-                <div class="feedback" id="voice-follow-feedback"></div>
+                <button class="big-btn record" id="voice-follow-record" aria-label="음성 녹음 시작 버튼">🎤 말하기</button>
+                <div class="feedback" id="voice-follow-feedback" role="alert" aria-live="assertive"></div>
+                <div class="voice-wave" id="voice-wave" aria-hidden="true">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
             </section>
 
             <!-- 문장놀이 -->
-            <section id="sentence-game" class="game-section">
-                <h2>📝 문장 만들기</h2>
-                <div class="sentence-display" id="sentence-display">
+            <section id="sentence-game" class="game-section" aria-labelledby="sentence-title" role="region">
+                <h2 id="sentence-title">📝 문장 만들기</h2>
+                <div class="sentence-progress" aria-label="문장 진행도">
+                    <span id="sentence-current">1</span> / <span id="sentence-total">5</span>
+                </div>
+                <div class="sentence-display" id="sentence-display" role="group" aria-label="문장 빈칸 채우기">
                     <!-- 빈칸이 여기에 표시됩니다 -->
                 </div>
-                <div class="sign-bank" id="sign-bank">
+                <div class="sign-bank" id="sign-bank" role="group" aria-label="수화 단어 선택지">
                     <!-- 수화 카드 선택지가 생성됩니다 -->
                 </div>
-                <button class="big-btn success" id="check-sentence">✔️ 다 됐어요!</button>
-                <div class="feedback" id="sentence-feedback"></div>
+                <button class="big-btn success" id="check-sentence" aria-label="정답 확인 버튼">✔️ 다 됐어요!</button>
+                <div class="feedback" id="sentence-feedback" role="alert" aria-live="assertive"></div>
             </section>
 
             <!-- 음성 구현 따라하기 놀이 -->
-            <section id="voice-impl-game" class="game-section">
-                <h2>🎵 소리와 함께해요</h2>
-                <div class="phrase-display" id="voice-impl-phrase">
+            <section id="voice-impl-game" class="game-section" aria-labelledby="voice-impl-title" role="region">
+                <h2 id="voice-impl-title">🎵 소리와 함께해요</h2>
+                <div class="phrase-display" id="voice-impl-phrase" role="status" aria-live="polite">
                     <!-- 수화 문구와 음성이 표시됩니다 -->
                 </div>
-                <div class="gesture-animation" id="voice-impl-animation">
+                <div class="gesture-animation" id="voice-impl-animation" aria-label="음성 동기화 애니메이션">
                     <!-- 손 동작과 음성 동기화 애니메이션 -->
                 </div>
-                <button class="big-btn primary" id="follow-voice-impl">🎵 따라하기!</button>
-                <div class="feedback" id="voice-impl-feedback"></div>
+                <button class="big-btn primary" id="follow-voice-impl" aria-label="따라하기 시작 버튼">🎵 따라하기!</button>
+                <div class="feedback" id="voice-impl-feedback" role="alert" aria-live="assertive"></div>
             </section>
         </main>
 
-        <footer>
+        <footer role="contentinfo">
             <p>💕 손으로 마음을 전해요 💕</p>
+            <div class="footer-links">
+                <button class="footer-btn" id="reset-progress" aria-label="진행 상황 초기화">🔄 다시 시작</button>
+                <button class="footer-btn" id="sound-toggle" aria-label="음성 안내 끄기" aria-pressed="true">🔊 켜짐</button>
+            </div>
         </footer>
     </div>
 
-    <!-- 마스코트 캐릭터 -->
-    <div class="mascot" id="mascot" aria-hidden="true">
-        <svg viewBox="0 0 120 120">
+    <!-- 마스코트 캐릭터 (인터랙티브) -->
+    <button class="mascot mascot-btn" id="mascot" aria-label="마스코트 캐릭터. 클릭하면 반응해요!" tabindex="0">
+        <svg viewBox="0 0 120 120" role="img" aria-label="귀여운 동물 마스코트">
+            <defs>
+                <linearGradient id="faceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#FFC93C"/>
+                    <stop offset="100%" style="stop-color:#FFB01E"/>
+                </linearGradient>
+            </defs>
             <circle cx="36" cy="26" r="14" class="m-ear"/>
             <circle cx="84" cy="26" r="14" class="m-ear"/>
-            <circle cx="60" cy="62" r="42" class="m-face"/>
+            <circle cx="60" cy="62" r="42" class="m-face" fill="url(#faceGradient)"/>
             <circle cx="46" cy="56" r="6" class="m-eye"/>
             <circle cx="74" cy="56" r="6" class="m-eye"/>
             <circle cx="48" cy="54" r="2" class="m-sparkle"/>
@@ -112,11 +148,25 @@
             <circle cx="35" cy="70" r="6" class="m-cheek"/>
             <circle cx="85" cy="70" r="6" class="m-cheek"/>
         </svg>
+        <span class="mascot-bubble" id="mascot-bubble" aria-hidden="true">파이팅!</span>
+    </button>
+
+    <!-- 로딩 인디케이터 -->
+    <div class="loading-overlay" id="loading-overlay" role="status" aria-live="polite" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">준비 중이에요...</p>
     </div>
 
     <!-- 그래픽 효과 요소들 -->
-    <div id="particles-container"></div>
-    <div id="celebration-container"></div>
+    <div id="particles-container" aria-hidden="true"></div>
+    <div id="celebration-container" aria-hidden="true"></div>
+
+    <!-- 배경 패턴 -->
+    <div class="bg-pattern" aria-hidden="true">
+        <div class="pattern-shape star">⭐</div>
+        <div class="pattern-shape heart">💛</div>
+        <div class="pattern-shape flower">🌸</div>
+    </div>
 
     <script src="script.js"></script>
 </body>

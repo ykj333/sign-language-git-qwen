@@ -690,3 +690,125 @@ class SignLanguageApp {
 document.addEventListener('DOMContentLoaded', () => {
     new SignLanguageApp();
 });
+
+    /* ---------- 추가 기능들 ---------- */
+    
+    // 난이도 설정
+    setDifficulty(difficulty) {
+        this.currentDifficulty = difficulty;
+        
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.diff === difficulty);
+            btn.setAttribute('aria-pressed', btn.dataset.diff === difficulty ? 'true' : 'false');
+        });
+        
+        // 난이도에 따른 피드백
+        const messages = {
+            'easy': '쉬운 모드로 시작해요!',
+            'medium': '보통 모드로 도전해요!',
+            'hard': '어려운 모드! 화이팅!'
+        };
+        
+        this.showMascotBubble(messages[difficulty]);
+        if (this.soundEnabled) {
+            this.speak(messages[difficulty]);
+        }
+    }
+    
+    // 진행률 업데이트
+    updateProgress() {
+        const progressFill = document.getElementById('progress-fill');
+        const levelBadge = document.getElementById('level-badge');
+        
+        if (progressFill && levelBadge) {
+            const totalLevels = 20; // 목표 게임 수
+            const progress = Math.min((this.totalGamesPlayed / totalLevels) * 100, 100);
+            const level = Math.floor(this.totalGamesPlayed / 4) + 1;
+            
+            progressFill.style.width = progress + '%';
+            levelBadge.textContent = level + '단계';
+        }
+    }
+    
+    // 로딩 표시
+    showLoading(show) {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+            overlay.classList.toggle('show', show);
+            overlay.setAttribute('aria-hidden', !show);
+        }
+    }
+    
+    // 마스코트 상호작용
+    setupMascotInteraction() {
+        const mascot = document.getElementById('mascot');
+        if (!mascot) return;
+        
+        mascot.addEventListener('click', () => {
+            const randomMsg = this.mascotMessages[Math.floor(Math.random() * this.mascotMessages.length)];
+            this.showMascotBubble(randomMsg);
+            if (this.soundEnabled) {
+                this.speak(randomMsg);
+            }
+        });
+        
+        mascot.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                mascot.click();
+            }
+        });
+    }
+    
+    // 마스코트 말풍선 표시
+    showMascotBubble(message) {
+        const bubble = document.getElementById('mascot-bubble');
+        if (!bubble) return;
+        
+        bubble.textContent = message;
+        bubble.classList.add('show');
+        
+        setTimeout(() => {
+            bubble.classList.remove('show');
+        }, 2000);
+    }
+    
+    // 음성 토글
+    toggleSound() {
+        this.soundEnabled = !this.soundEnabled;
+        const btn = document.getElementById('sound-toggle');
+        if (btn) {
+            btn.textContent = this.soundEnabled ? '🔊 켜짐' : '🔇 꺼짐';
+            btn.setAttribute('aria-pressed', this.soundEnabled ? 'true' : 'false');
+            btn.setAttribute('aria-label', this.soundEnabled ? '음성 안내 끄기' : '음성 안내 켜기');
+        }
+        
+        if (this.soundEnabled) {
+            this.showMascotBubble('음성 안내가 켜졌어요!');
+            this.speak('음성 안내가 켜졌어요');
+        } else {
+            this.showMascotBubble('음성 안내가 꺼졌어요');
+        }
+    }
+    
+    // 진행 상황 초기화
+    resetProgress() {
+        if (confirm('정말로 모든 진행 상황을 초기화할까요?')) {
+            this.stickers = 0;
+            this.sentenceLevel = 0;
+            this.totalGamesPlayed = 0;
+            localStorage.setItem('signStars', '0');
+            this.updateStickerBar();
+            this.updateProgress();
+            this.showMascotBubble('처음부터 시작해요!');
+            if (this.soundEnabled) {
+                this.speak('처음부터 다시 시작해요');
+            }
+        }
+    }
+}
+
+// 앱 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    new SignLanguageApp();
+});
